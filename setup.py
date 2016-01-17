@@ -3,7 +3,7 @@ from setuptools import setup
 setup(
     name='neat-python',
     version='0.6',
-    author='cesar.gomes, mirrorballu2',
+    author='cesar.gomes, mirrorballu2,amro-pydev',
     author_email='nobody@nowhere.com',
     maintainer='CodeReclaimers, LLC',
     maintainer_email='alan@codereclaimers.com',
