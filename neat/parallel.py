@@ -4,7 +4,7 @@ from tqdm import *
 import time
 
 class ParallelEvaluator(object):
-    def __init__(self, eval_function, num_workers=mp.cpu_count(), timeout=None, sleep_time=0.1):
+    def __init__(self, eval_function, num_workers=mp.cpu_count(), timeout=None, sleep_time=0.1,progress_bar=False,verbose=0):
         '''
         eval_function should take one argument (a genome object) and return
         a single float (the genome's fitness).
@@ -14,30 +14,42 @@ class ParallelEvaluator(object):
         self.timeout = timeout
         self.pool = Pool(num_workers)
         self.sleep_time = sleep_time
+        self.progress_bar = progress_bar
+        self.verbose = verbose
 
     def evaluate(self, genomes):
         jobs = []
-        print("## Dispatching all jobs")
+        if self.verbose != 0:
+            print("## Dispatching all jobs")
         for genome in genomes:
             jobs.append(self.pool.apply_async(self.eval_function, (genome,)))
-        print("## Done dispatching all jobs")
+        if self.verbose != 0:
+            print("## Done dispatching all jobs")
         
-        print("## Evaluating Individuals")
-        pbar = tqdm(total=len(genomes))
-        curr_incomplete = len(genomes)
+        if self.verbose != 0:
+            print("## Evaluating Individuals")
+        
+        if self.progress_bar:
+            pbar = tqdm(total=len(genomes))
+            curr_incomplete = len(genomes)
+        
         start_time = time.time()
         
         while True:
             incomplete_count = sum(1 for x in jobs if not x.ready())
             if incomplete_count == 0:
-                pbar.close()
+                if self.progress_bar:
+                    pbar.close()
                 break
             
-            diff_incomplete = curr_incomplete - incomplete_count
-            if diff_incomplete > 0:
-                pbar.update(diff_incomplete)
+            if self.progress_bar:
+                diff_incomplete = curr_incomplete - incomplete_count
+                if diff_incomplete > 0:
+                    pbar.update(diff_incomplete)
             
-            curr_incomplete = incomplete_count
+            if self.progress_bar:
+                curr_incomplete = incomplete_count
+                
             if self.timeout != None:
                 time_diff = start_time - time.time()
                 if time_diff > self.timeout:

@@ -1,68 +1,68 @@
 import math
 import numpy as np
 
-def sigmoid_activation(x):
+def sigmoid_activation(z):
     z = np.clip(z,-60.0,60.0)
     return 1.0 / (1.0 + np.exp(-z))
 
 
-def tanh_activation(x):
+def tanh_activation(z):
     z = np.clip(z,-60.0,60.0)
     return np.tanh(z)
 
 
-def sin_activation(x):
+def sin_activation(z):
     z = np.clip(z,-60.0,60.0)
     return np.sin(z)
 
 
-def gauss_activation(x):
+def gauss_activation(z):
     z = np.clip(z,-60.0,60.0)
     return np.exp(-0.5 * z**2) / np.sqrt(2 * math.pi)
 
 
-def relu_activation(x):
+def relu_activation(z):
     return z if z > 0.0 else 0
 
 
-def identity_activation(x):
+def identity_activation(z):
     return x
 
 
-def clamped_activation(x):
+def clamped_activation(z):
     return np.clip(z,-1.0,1.0)
 
 
-def inv_activation(x):
+def inv_activation(z):
     if z == 0:
         return 0.0
 
     return 1.0 / z
 
 
-def log_activation(x):
+def log_activation(z):
     z = np.clip(z,1e-7,1.0e99)
     return np.log(z)
 
 
-def exp_activation(x):
+def exp_activation(z):
     z = np.clip(z,-60.0,60.0)
     return np.exp(z)
 
 
-def abs_activation(x):
+def abs_activation(z):
     return np.abs(z)
 
 
-def hat_activation(x):
+def hat_activation(z):
     return np.clip(z,0.0,1.0-np.abs(z))
 
 
-def square_activation(x):
+def square_activation(z):
     return z ** 2
 
 
-def cube_activation(x):
+def cube_activation(z):
     return z ** 3
 
 

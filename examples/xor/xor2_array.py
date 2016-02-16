@@ -1,5 +1,18 @@
 """
-Testing NEAT algorithm on an BNP competition and see how it will perform.
+A parallel version of XOR using neat.parallel with numpy arrays.
+
+Since XOR is a simple experiment, a parallel version probably won't run any
+faster than the single-process version, due to the overhead of
+inter-process communication.
+
+If your evaluation function is what's taking up most of your processing time
+(and you should probably check by using a profiler while running
+single-process), you should see a significant performance improvement by
+evaluating in parallel.
+
+This example is only intended to show how to do a parallel experiment
+in neat-python.  You can of course roll your own parallelism mechanism
+or inherit from ParallelEvaluator if you need to do something more complicated.
 """
 
 from __future__ import print_function
@@ -11,6 +24,7 @@ import numpy as np
 
 from neat import nn, parallel, population, visualize
 
+# Network inputs and expected outputs.
 xor_inputs = np.asarray(((0, 0), (0, 1), (1, 0), (1, 1)))
 xor_outputs = np.asarray([0, 1, 1, 0])
 xor_outputs = np.reshape(xor_outputs,(-1,1))
@@ -31,8 +45,8 @@ def fitness(genome):
 
     error = 0.0
     outputs = net.array_activate(xor_inputs)
-    diffs = (xor_outputs - outputs) ** 2
-    error_sum = np.sum(diffs)
+    sum_square_errors = (xor_outputs - outputs) ** 2
+    error_sum = np.sum(sum_square_errors)
     return 1.0 - np.sqrt(error_sum / xor_sample_size)
 
 
@@ -48,7 +62,7 @@ def run():
     pe = parallel.ParallelEvaluator(fitness,3)
 
     pop = population.Population(config_path)
-    pop.epoch(pe.evaluate, 400)
+    pop.run(pe.evaluate, 400)
 
     print("total evolution time {0:.3f} sec".format((time.time() - t0)))
     print("time per generation {0:.3f} sec".format(((time.time() - t0) / pop.generation)))
@@ -57,7 +71,7 @@ def run():
 
     # Verify network output against training data.
     print('\nBest network output:')
-    winner = pop.most_fit_genomes[-1]
+    winner = pop.statistics.best_genome()
     net = nn.create_feed_forward_phenotype(winner)
     outputs = net.array_activate(xor_inputs)
     
@@ -65,8 +79,8 @@ def run():
     print("Generated output : ", outputs)
     
     # Visualize the winner network and plot statistics.
-    visualize.plot_stats(pop)
-    visualize.plot_species(pop)
+    visualize.plot_stats(pop.statistics)
+    visualize.plot_species(pop.statistics)
     visualize.draw_net(winner, view=True)
 
 

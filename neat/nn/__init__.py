@@ -1,4 +1,5 @@
 from neat import activation_functions
+import numpy as np
 
 
 def find_feed_forward_layers(inputs, connections):
