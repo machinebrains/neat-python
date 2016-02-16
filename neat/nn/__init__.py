@@ -1,28 +1,30 @@
 import math
+import numpy as np
 
+__enable_debug__ = False
 
 def sigmoid_activation(bias, response, x):
     z = bias + x * response
-    z = max(-60.0, min(60.0, z))
-    return 1.0 / (1.0 + math.exp(-z))
+    z = np.clip(z,-60.0,60.0)
+    return 1.0 / (1.0 + np.exp(-z))
 
 
 def tanh_activation(bias, response, x):
     z = bias + x * response
-    z = max(-60.0, min(60.0, z))
-    return math.tanh(z)
+    z = np.clip(z,-60.0,60.0)
+    return np.tanh(z)
 
 
 def sin_activation(bias, response, x):
     z = bias + x * response
-    z = max(-60.0, min(60.0, z))
-    return math.sin(z)
+    z = np.clip(z,-60.0,60.0)
+    return np.sin(z)
 
 
 def gauss_activation(bias, response, x):
     z = bias + x * response
-    z = max(-60.0, min(60.0, z))
-    return math.exp(-0.5 * z**2) / math.sqrt(2 * math.pi)
+    z = np.clip(z,-60.0,60.0)
+    return np.exp(-0.5 * z**2) / np.sqrt(2 * math.pi)
 
 
 def relu_activation(bias, response, x):
@@ -36,7 +38,7 @@ def identity_activation(bias, response, x):
 
 def clamped_activation(bias, response, x):
     z = bias + x * response
-    return max(-1.0, min(1.0, z))
+    return np.clip(z,-1.0,1.0)
 
 
 def inv_activation(bias, response, x):
@@ -49,24 +51,24 @@ def inv_activation(bias, response, x):
 
 def log_activation(bias, response, x):
     z = bias + x * response
-    z = max(1e-7, z)
-    return math.log(z)
+    z = np.clip(z,1e-7,1.0e99)
+    return np.log(z)
 
 
 def exp_activation(bias, response, x):
     z = bias + x * response
-    z = max(-60.0, min(60.0, z))
-    return math.exp(z)
+    z = np.clip(z,-60.0,60.0)
+    return np.exp(z)
 
 
 def abs_activation(bias, response, x):
     z = bias + x * response
-    return abs(z)
+    return np.abs(z)
 
 
 def hat_activation(bias, response, x):
     z = bias + x * response
-    return max(0.0, 1 - abs(z))
+    return np.clip(z,0.0,1.0-np.abs(z))
 
 
 def square_activation(bias, response, x):
@@ -133,6 +135,7 @@ class FeedForwardNetwork(object):
         self.input_nodes = inputs
         self.output_nodes = outputs
         self.values = [0.0] * (1 + max_node)
+        self.num_nodes = 1 + max_node
 
     def serial_activate(self, inputs):
         for i, v in zip(self.input_nodes, inputs):
@@ -145,6 +148,43 @@ class FeedForwardNetwork(object):
             self.values[node] = func(bias, response, s)
 
         return [self.values[i] for i in self.output_nodes]
+    
+    def array_activate(self, inputs):
+        """ This intended for usage with numpy arrays and won't work with scalar values."""
+        if not isinstance(inputs, (np.ndarray, np.generic) ):
+            raise Exception('Inputs are not numpy arrays. parallel_activate function is working with only with numpy arrays.')
+        
+        num_datapoints = inputs.shape[0]
+        num_features = inputs.shape[1]
+        
+        values_array = np.zeros((num_datapoints,self.num_nodes))
+        
+        if num_features != len(self.input_nodes):
+            raise Exception('Number of inputs is not equal to the number of columns in the array. Can not be used.')
+        
+        for i, v in zip(self.input_nodes, range(num_features)):
+            values_array[:,i] = inputs[:,v]
+            if __enable_debug__ == True:
+                print "Input Nodes : " , i, inputs[:,v]
+
+        for node, func, bias, response, links in self.node_evals:
+            s = np.zeros(num_datapoints)
+            for i, w in links:
+                if __enable_debug__ == True:
+                    print s
+                    print values_array[:,i]
+                if __enable_debug__ == True:
+                    print "-- Connection from " , i , " to " , node , " with weight " , w
+                s += values_array[:,i] * w
+                
+            values_array[:,node] = func(bias,response,s)
+            if __enable_debug__ == True:
+                print "Nodes : ", node, func, bias, response, links
+        
+        if __enable_debug__ == True:
+            print values_array
+        
+        return np.array([values_array[:,i] for i in self.output_nodes]).T
 
 
 def create_feed_forward_phenotype(genome):

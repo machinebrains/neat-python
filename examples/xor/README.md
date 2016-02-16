@@ -13,7 +13,10 @@ NEAT-specific code and watch what happens without getting swamped by the complex
 you get if you stick with the *neat-python* defaults.
 
 * `xor2_parallel.py` evolves the same type of network as `xor2.py`, but this example shows how you can make use of 
-multiple processors to evaluate networks in parallel.  
+multiple processors to evaluate networks in parallel.
+
+* `xor2_array.py` evolves the same type of network as `xor2.py`, but this example how to use numpy array new functionality to evolove. This should be faster for larger datasets.
+This example is using 3 processors to evaluate networks in parallel.   
 
 * `xor2_spiking.py` evolves a network of spiking neurons, using Izhikevich's neuron model from ["Simple model of spiking 
 neurons"](http://www.dis.uniroma1.it/~gori/Sito_GG/Modellistica_files/2003%20Net.pdf) in 2003.
