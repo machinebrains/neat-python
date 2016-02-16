@@ -13,5 +13,5 @@ def test_minimal():
     config_path = os.path.join(local_dir, 'test_configuration')
 
     pop = Population(config_path)
-    pe = parallel.ParallelEvaluator(4, eval_fitness)
+    pe = parallel.ParallelEvaluator(eval_fitness,4)
     pop.run(pe.evaluate, 400)

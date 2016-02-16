@@ -55,7 +55,7 @@ def abs_activation(z):
 
 
 def hat_activation(z):
-    return np.clip(z,0.0,1.0-np.abs(z))
+    return np.clip(1.0-np.abs(z),0.0,1.5)
 
 
 def square_activation(z):

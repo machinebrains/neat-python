@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/machinebrains/neat-python.svg)](https://travis-ci.org/machinebrains/neat-python)
-[![Code Issues](https://www.quantifiedcode.com/api/v1/project/2bb1d19f57684f4589cb4700f99dd75e/badge.svg)](https://www.quantifiedcode.com/app/project/2bb1d19f57684f4589cb4700f99dd75e)
+[![Code Issues](https://www.quantifiedcode.com/api/v1/project/71f3c62dda1b42c988d0fccb7f2d6455/badge.svg)](https://www.quantifiedcode.com/app/project/71f3c62dda1b42c988d0fccb7f2d6455)
 [![Coverage Status](https://coveralls.io/repos/CodeReclaimers/neat-python/badge.svg?branch=master&service=github)](https://coveralls.io/github/CodeReclaimers/neat-python?branch=master)
 
 ## About ##
