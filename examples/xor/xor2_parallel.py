@@ -1,13 +1,14 @@
 """
 A parallel version of XOR using neat.parallel.
 
-Since XOR is a simple experiment, a parallel version probably won't run
-much faster than the single-process version, due to the overhead of
+Since XOR is a simple experiment, a parallel version probably won't run any
+faster than the single-process version, due to the overhead of
 inter-process communication.
 
 If your evaluation function is what's taking up most of your processing time
-(and you should probably check by using a profiler), you should see a
-significant performance improvement by evaluating in parallel.
+(and you should probably check by using a profiler while running
+single-process), you should see a significant performance improvement by
+evaluating in parallel.
 
 This example is only intended to show how to do a parallel experiment
 in neat-python.  You can of course roll your own parallelism mechanism
@@ -22,6 +23,7 @@ import time
 
 from neat import nn, parallel, population, visualize
 
+# Network inputs and expected outputs.
 xor_inputs = ((0, 0), (0, 1), (1, 0), (1, 1))
 xor_outputs = (0, 1, 1, 0)
 
@@ -39,13 +41,13 @@ def fitness(genome):
     """
     net = nn.create_feed_forward_phenotype(genome)
 
-    error = 0.0
+    sum_square_error = 0.0
     for inputData, outputData in zip(xor_inputs, xor_outputs):
         # serial activation
         output = net.serial_activate(inputData)
-        error += (output[0] - outputData) ** 2
+        sum_square_error += (output[0] - outputData) ** 2
 
-    return 1 - math.sqrt(error / len(xor_outputs))
+    return 1 - math.sqrt(sum_square_error / len(xor_outputs))
 
 
 def run():
@@ -60,7 +62,7 @@ def run():
     pe = parallel.ParallelEvaluator(fitness,3)
 
     pop = population.Population(config_path)
-    pop.epoch(pe.evaluate, 400)
+    pop.run(pe.evaluate, 400)
 
     print("total evolution time {0:.3f} sec".format((time.time() - t0)))
     print("time per generation {0:.3f} sec".format(((time.time() - t0) / pop.generation)))
@@ -69,15 +71,15 @@ def run():
 
     # Verify network output against training data.
     print('\nBest network output:')
-    winner = pop.most_fit_genomes[-1]
+    winner = pop.statistics.best_genome()
     net = nn.create_feed_forward_phenotype(winner)
     for i, inputs in enumerate(xor_inputs):
         output = net.serial_activate(inputs)  # serial activation
         print("{0:1.5f} \t {1:1.5f}".format(xor_outputs[i], output[0]))
 
     # Visualize the winner network and plot statistics.
-    visualize.plot_stats(pop)
-    visualize.plot_species(pop)
+    visualize.plot_stats(pop.statistics)
+    visualize.plot_species(pop.statistics)
     visualize.draw_net(winner, view=True)
 
 

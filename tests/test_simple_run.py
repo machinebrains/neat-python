@@ -27,16 +27,21 @@ def test_run():
     config = Config(os.path.join(local_dir, 'test_configuration'))
 
     pop = population.Population(config)
-    pop.epoch(eval_fitness, 10)
+    pop.run(eval_fitness, 10)
 
-    visualize.plot_stats(pop)
-    visualize.plot_species(pop)
+    visualize.plot_stats(pop.statistics)
+    visualize.plot_species(pop.statistics)
 
-    winner = pop.most_fit_genomes[-1]
+    winner = pop.statistics.best_genome()
+
+    # Validate winner.
+    for g in pop.statistics.most_fit_genomes:
+        assert winner.fitness >= g.fitness
+
     visualize.draw_net(winner, view=False, filename="xor2-all.gv")
     visualize.draw_net(winner, view=False, filename="xor2-enabled.gv", show_disabled=False)
     visualize.draw_net(winner, view=False, filename="xor2-enabled-pruned.gv", show_disabled=False, prune_unused=True)
-    statistics.save_stats(pop)
-    statistics.save_species_count(pop)
-    statistics.save_species_fitness(pop)
+    statistics.save_stats(pop.statistics)
+    statistics.save_species_count(pop.statistics)
+    statistics.save_species_fitness(pop.statistics)
 

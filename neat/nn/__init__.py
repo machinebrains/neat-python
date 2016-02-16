@@ -1,100 +1,4 @@
-import math
-import numpy as np
-
-__enable_debug__ = False
-
-def sigmoid_activation(bias, response, x):
-    z = bias + x * response
-    z = np.clip(z,-60.0,60.0)
-    return 1.0 / (1.0 + np.exp(-z))
-
-
-def tanh_activation(bias, response, x):
-    z = bias + x * response
-    z = np.clip(z,-60.0,60.0)
-    return np.tanh(z)
-
-
-def sin_activation(bias, response, x):
-    z = bias + x * response
-    z = np.clip(z,-60.0,60.0)
-    return np.sin(z)
-
-
-def gauss_activation(bias, response, x):
-    z = bias + x * response
-    z = np.clip(z,-60.0,60.0)
-    return np.exp(-0.5 * z**2) / np.sqrt(2 * math.pi)
-
-
-def relu_activation(bias, response, x):
-    z = bias + x * response
-    return z if z > 0.0 else 0
-
-
-def identity_activation(bias, response, x):
-    return bias + x * response
-
-
-def clamped_activation(bias, response, x):
-    z = bias + x * response
-    return np.clip(z,-1.0,1.0)
-
-
-def inv_activation(bias, response, x):
-    z = bias + x * response
-    if z == 0:
-        return 0.0
-
-    return 1.0 / z
-
-
-def log_activation(bias, response, x):
-    z = bias + x * response
-    z = np.clip(z,1e-7,1.0e99)
-    return np.log(z)
-
-
-def exp_activation(bias, response, x):
-    z = bias + x * response
-    z = np.clip(z,-60.0,60.0)
-    return np.exp(z)
-
-
-def abs_activation(bias, response, x):
-    z = bias + x * response
-    return np.abs(z)
-
-
-def hat_activation(bias, response, x):
-    z = bias + x * response
-    return np.clip(z,0.0,1.0-np.abs(z))
-
-
-def square_activation(bias, response, x):
-    z = bias + x * response
-    return z ** 2
-
-
-def cube_activation(bias, response, x):
-    z = bias + x * response
-    return z ** 3
-
-
-activations = {'sigmoid':sigmoid_activation,
-               'tanh': tanh_activation,
-               'sin': sin_activation,
-               'gauss': gauss_activation,
-               'relu': relu_activation,
-               'identity': identity_activation,
-               'clamped': clamped_activation,
-               'inv': inv_activation,
-               'log': log_activation,
-               'exp': exp_activation,
-               'abs': abs_activation,
-               'hat': hat_activation,
-               'square': square_activation,
-               'cube': cube_activation}
+from neat import activation_functions
 
 
 def find_feed_forward_layers(inputs, connections):
@@ -138,6 +42,9 @@ class FeedForwardNetwork(object):
         self.num_nodes = 1 + max_node
 
     def serial_activate(self, inputs):
+        if len(self.input_nodes) != len(inputs):
+            raise Exception("Expected {} inputs, got {}".format(len(self.input_nodes), len(inputs)))
+
         for i, v in zip(self.input_nodes, inputs):
             self.values[i] = v
 
@@ -145,7 +52,7 @@ class FeedForwardNetwork(object):
             s = 0.0
             for i, w in links:
                 s += self.values[i] * w
-            self.values[node] = func(bias, response, s)
+            self.values[node] = func(bias + response * s)
 
         return [self.values[i] for i in self.output_nodes]
     
@@ -164,25 +71,14 @@ class FeedForwardNetwork(object):
         
         for i, v in zip(self.input_nodes, range(num_features)):
             values_array[:,i] = inputs[:,v]
-            if __enable_debug__ == True:
-                print "Input Nodes : " , i, inputs[:,v]
 
         for node, func, bias, response, links in self.node_evals:
             s = np.zeros(num_datapoints)
             for i, w in links:
-                if __enable_debug__ == True:
-                    print s
-                    print values_array[:,i]
-                if __enable_debug__ == True:
-                    print "-- Connection from " , i , " to " , node , " with weight " , w
                 s += values_array[:,i] * w
                 
-            values_array[:,node] = func(bias,response,s)
-            if __enable_debug__ == True:
-                print "Nodes : ", node, func, bias, response, links
-        
-        if __enable_debug__ == True:
-            print values_array
+            values_array[:,node] = func(bias + response * s)
+            
         
         return np.array([values_array[:,i] for i in self.output_nodes]).T
 
@@ -209,7 +105,7 @@ def create_feed_forward_phenotype(genome):
 
             used_nodes.add(node)
             ng = genome.node_genes[node]
-            activation_function = activations[ng.activation_type]
+            activation_function = activation_functions.get(ng.activation_type)
             node_evals.append((node, activation_function, ng.bias, ng.response, inputs))
 
     return FeedForwardNetwork(max(used_nodes), input_nodes, output_nodes, node_evals)
@@ -241,7 +137,7 @@ class RecurrentNetwork(object):
             s = 0.0
             for i, w in links:
                 s += ivalues[i] * w
-            ovalues[node] = func(bias, response, s)
+            ovalues[node] = func(bias + response * s)
 
         return [ovalues[i] for i in self.output_nodes]
 
@@ -270,7 +166,7 @@ def create_recurrent_phenotype(genome):
     node_evals = []
     for onode, inputs in node_inputs.items():
         ng = genome.node_genes[onode]
-        activation_function = activations[ng.activation_type]
+        activation_function = activation_functions.get(ng.activation_type)
         node_evals.append((onode, activation_function, ng.bias, ng.response, inputs))
 
     return RecurrentNetwork(max(used_nodes), input_nodes, output_nodes, node_evals)
