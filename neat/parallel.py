@@ -4,7 +4,7 @@ import multiprocessing as mp
 no_progress_lib = 0
 try:
     from tqdm import *
-execpt ImportError:
+except ImportError:
     no_progress_lib = 1
     pass
 
