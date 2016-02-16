@@ -26,7 +26,7 @@ def relu_activation(z):
 
 
 def identity_activation(z):
-    return x
+    return z
 
 
 def clamped_activation(z):
