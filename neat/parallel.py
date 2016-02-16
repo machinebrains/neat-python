@@ -1,6 +1,13 @@
 from multiprocessing import Pool
 import multiprocessing as mp
-from tqdm import *
+
+no_progress_lib = 0
+try:
+    from tqdm import *
+execpt ImportError:
+    no_progress_lib = 1
+    pass
+
 import time
 
 class ParallelEvaluator(object):
@@ -14,7 +21,10 @@ class ParallelEvaluator(object):
         self.timeout = timeout
         self.pool = Pool(num_workers)
         self.sleep_time = sleep_time
-        self.progress_bar = progress_bar
+        if no_progress_lib == 1:
+            self.progress_bar = progress_bar
+        else:
+            self.progress_bar = False
         self.verbose = verbose
 
     def evaluate(self, genomes):
