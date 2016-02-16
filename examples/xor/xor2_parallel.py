@@ -57,7 +57,7 @@ def run():
     config_path = os.path.join(local_dir, 'xor2_config')
 
     # Use a pool of four workers to evaluate fitness in parallel.
-    pe = parallel.ParallelEvaluator(4, fitness)
+    pe = parallel.ParallelEvaluator(fitness,3)
 
     pop = population.Population(config_path)
     pop.epoch(pe.evaluate, 400)
