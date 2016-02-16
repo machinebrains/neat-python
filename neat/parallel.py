@@ -1,9 +1,10 @@
 from multiprocessing import Pool
+import multiprocessing as mp
 from tqdm import *
 import time
 
 class ParallelEvaluator(object):
-    def __init__(self, num_workers, eval_function, timeout=None, sleep_time=0.1):
+    def __init__(self, eval_function, num_workers=mp.cpu_count(), timeout=None, sleep_time=0.1):
         '''
         eval_function should take one argument (a genome object) and return
         a single float (the genome's fitness).

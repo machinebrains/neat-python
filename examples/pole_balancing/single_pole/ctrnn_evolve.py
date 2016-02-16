@@ -53,7 +53,7 @@ config = Config(os.path.join(local_dir, 'ctrnn_config'))
 config.node_gene_type = ctrnn.CTNodeGene
 
 pop = population.Population(config)
-pe = parallel.ParallelEvaluator(4, evaluate_genome)
+pe = parallel.ParallelEvaluator(evaluate_genome)
 pop.epoch(pe.evaluate, 2000)
 
 # Save the winner.

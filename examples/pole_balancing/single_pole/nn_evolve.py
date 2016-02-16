@@ -52,7 +52,7 @@ local_dir = os.path.dirname(__file__)
 config = Config(os.path.join(local_dir, 'nn_config'))
 
 pop = population.Population(config)
-pe = parallel.ParallelEvaluator(4, evaluate_genome)
+pe = parallel.ParallelEvaluator(evaluate_genome)
 pop.epoch(pe.evaluate, 2000)
 
 # Save the winner.
