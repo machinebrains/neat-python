@@ -21,7 +21,7 @@ class ParallelEvaluator(object):
         self.timeout = timeout
         self.pool = Pool(num_workers)
         self.sleep_time = sleep_time
-        if no_progress_lib == 1:
+        if no_progress_lib == 0:
             self.progress_bar = progress_bar
         else:
             self.progress_bar = False
