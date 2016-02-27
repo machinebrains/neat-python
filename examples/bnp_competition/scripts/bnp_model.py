@@ -13,7 +13,7 @@ import operator
 
 import math
 
-from neat import nn, parallel, population, visualize
+from neatsociety import nn, parallel, population, visualize
 
 from sklearn import preprocessing
 from sklearn.cross_validation import train_test_split

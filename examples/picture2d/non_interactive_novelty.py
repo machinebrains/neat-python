@@ -5,7 +5,7 @@ from multiprocessing import Pool
 import numpy as np
 
 from common import eval_mono_image, eval_gray_image, eval_color_image
-from neat import population, config
+from neatsociety import population, config
 
 width, height = 16, 16
 full_scale = 16

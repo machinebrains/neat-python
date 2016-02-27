@@ -7,8 +7,8 @@ try the single_pole or xor examples.''')
 import cPickle
 import os
 
-from neat import population, visualize
-from neat.config import Config
+from neatsociety import population, visualize
+from neatsociety.config import Config
 from cart_pole import CartPole
 
 

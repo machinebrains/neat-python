@@ -254,7 +254,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'neat-python', u'NEAT-Python Documentation',
+    (master_doc, 'neatsociety-python', u'NEAT-Python Documentation',
      [author], 1)
 ]
 

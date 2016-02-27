@@ -2,7 +2,7 @@ import pickle
 import pygame
 
 import evolve
-from neat import nn, visualize
+from neatsociety import nn, visualize
 
 evolve.W = 1000
 evolve.H = 1000

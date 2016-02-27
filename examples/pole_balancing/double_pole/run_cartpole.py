@@ -7,7 +7,7 @@ import sys
 import re
 import os
 
-from neat.math_util import mean, stdev
+from neatsociety.math_util import mean, stdev
 
 p = re.compile('\d*\d')
 

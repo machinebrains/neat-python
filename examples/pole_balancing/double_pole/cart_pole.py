@@ -2,7 +2,7 @@
 import sys
 from random import randint
 
-from neat.nn import nn_pure as nn
+from neatsociety.nn import nn_pure as nn
 
 # wrapped from C++
 from dpole import integrate

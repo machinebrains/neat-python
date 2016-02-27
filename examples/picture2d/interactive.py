@@ -14,7 +14,7 @@ import pygame
 # die out in this application just because the fitness can't go up forever.
 
 from multiprocessing import Pool
-from neat import population, config
+from neatsociety import population, config
 from common import eval_mono_image, eval_gray_image, eval_color_image
 
 

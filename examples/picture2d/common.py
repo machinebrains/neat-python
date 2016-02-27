@@ -1,4 +1,4 @@
-from neat import nn
+from neatsociety import nn
 
 
 def eval_mono_image(genome, width, height):

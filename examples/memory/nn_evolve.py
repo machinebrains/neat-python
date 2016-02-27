@@ -10,7 +10,7 @@ import math
 import os
 import random
 
-from neat import nn, population, statistics, visualize, parallel, activation_functions
+from neatsociety import nn, population, statistics, visualize, parallel, activation_functions
 
 # num_tests is the number of random examples each network is tested against.
 num_tests = 16

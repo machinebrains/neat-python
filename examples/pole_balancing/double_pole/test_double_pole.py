@@ -10,7 +10,7 @@ import sys
 import cPickle
 from cart_pole import CartPole
 
-from neat.config import Config
+from neatsociety.config import Config
 
 filename = 'winner_chromosome'
 if len(sys.argv) > 1:
