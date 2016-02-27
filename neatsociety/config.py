@@ -1,10 +1,10 @@
 import os
 
-from neat.genes import NodeGene, ConnectionGene
-from neat.genome import Genome, FFGenome
-from neat import activation_functions
-from neat.reproduction import DefaultReproduction
-from neat.stagnation import DefaultStagnation
+from neatsociety.genes import NodeGene, ConnectionGene
+from neatsociety.genome import Genome, FFGenome
+from neatsociety import activation_functions
+from neatsociety.reproduction import DefaultReproduction
+from neatsociety.stagnation import DefaultStagnation
 
 try:
     from configparser import ConfigParser

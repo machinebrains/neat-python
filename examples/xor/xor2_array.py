@@ -1,5 +1,5 @@
 """
-A parallel version of XOR using neat.parallel with numpy arrays.
+A parallel version of XOR using neatsociety.parallel with numpy arrays.
 
 Since XOR is a simple experiment, a parallel version probably won't run any
 faster than the single-process version, due to the overhead of
@@ -11,7 +11,7 @@ single-process), you should see a significant performance improvement by
 evaluating in parallel.
 
 This example is only intended to show how to do a parallel experiment
-in neat-python.  You can of course roll your own parallelism mechanism
+in neatsociety-python.  You can of course roll your own parallelism mechanism
 or inherit from ParallelEvaluator if you need to do something more complicated.
 """
 
@@ -22,7 +22,7 @@ import os
 import time
 import numpy as np
 
-from neat import nn, parallel, population, visualize
+from neatsociety import nn, parallel, population, visualize
 
 # Network inputs and expected outputs.
 xor_inputs = np.asarray(((0, 0), (0, 1), (1, 0), (1, 1)))

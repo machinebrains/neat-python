@@ -3,7 +3,7 @@ from __future__ import print_function
 import copy
 import time
 
-from neat.math_util import mean, stdev
+from neatsociety.math_util import mean, stdev
 
 
 class ReporterSet(object):

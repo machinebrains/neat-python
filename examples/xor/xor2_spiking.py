@@ -3,8 +3,8 @@ from __future__ import print_function
 import os
 import matplotlib.pyplot as plt
 from matplotlib import patches
-from neat import population, iznn, visualize
-from neat.config import Config
+from neatsociety import population, iznn, visualize
+from neatsociety.config import Config
 
 # Network inputs and expected outputs.
 xor_inputs = ((0, 0), (0, 1), (1, 0), (1, 1))

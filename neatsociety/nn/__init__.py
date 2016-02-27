@@ -1,4 +1,4 @@
-from neat import activation_functions
+from neatsociety import activation_functions
 import numpy as np
 
 

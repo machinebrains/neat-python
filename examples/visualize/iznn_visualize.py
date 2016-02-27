@@ -1,7 +1,7 @@
 from __future__ import print_function
 import matplotlib.pyplot as plt
-from neat import visualize
-from neat.iznn import Neuron
+from neatsociety import visualize
+from neatsociety.iznn import Neuron
 
 
 def show(title, a, b, c, d):

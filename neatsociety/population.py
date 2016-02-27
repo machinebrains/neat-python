@@ -6,10 +6,10 @@ import random
 import time
 import os
 
-from neat.config import Config
-from neat.indexer import Indexer, InnovationIndexer
-from neat.reporting import ReporterSet, StatisticsReporter, StdOutReporter
-from neat.species import Species
+from neatsociety.config import Config
+from neatsociety.indexer import Indexer, InnovationIndexer
+from neatsociety.reporting import ReporterSet, StatisticsReporter, StdOutReporter
+from neatsociety.species import Species
 
 
 class CompleteExtinctionException(Exception):
@@ -80,7 +80,7 @@ class Population(object):
     def save_checkpoint(self, filename=None, checkpoint_type="user"):
         """ Save the current simulation state. """
         if filename is None:
-            filename = os.path.join(self.config.checkpoint_time_interval.models_directory,'neat-checkpoint-{0}'.format(self.generation))
+            filename = os.path.join(self.config.checkpoint_time_interval.models_directory,'neatsociety-checkpoint-{0}'.format(self.generation))
 
         self.reporters.saving_checkpoint(checkpoint_type, filename)
 

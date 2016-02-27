@@ -1,4 +1,4 @@
-from neat.nn import find_feed_forward_layers
+from neatsociety.nn import find_feed_forward_layers
 
 
 def test_simple():

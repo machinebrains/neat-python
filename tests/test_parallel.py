@@ -1,6 +1,6 @@
 import os
-from neat.population import Population
-from neat import parallel
+from neatsociety.population import Population
+from neatsociety import parallel
 
 
 # dummy fitness function

@@ -9,9 +9,9 @@ import pickle
 
 import cart_pole
 
-from neat import ctrnn, parallel, population, visualize
-from neat.config import Config
-from neat.math_util import mean
+from neatsociety import ctrnn, parallel, population, visualize
+from neatsociety.config import Config
+from neatsociety.math_util import mean
 
 runs_per_net = 5
 num_steps = 60000 # equivalent to 1 minute of simulation time

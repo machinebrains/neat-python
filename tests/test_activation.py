@@ -1,4 +1,4 @@
-from neat.activations import *
+from neatsociety.activations import *
 
 # TODO: These tests are just smoke tests to make sure nothing has become badly broken.  Expand
 # to include more detailed tests of actual functionality.

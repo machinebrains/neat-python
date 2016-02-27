@@ -1,9 +1,9 @@
 import os
 import tempfile
 
-from neat import activation_functions
-from neat.config import Config
-from neat.population import Population
+from neatsociety import activation_functions
+from neatsociety.config import Config
+from neatsociety.population import Population
 
 
 def test_minimal():

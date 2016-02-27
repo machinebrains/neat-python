@@ -4,9 +4,9 @@
  using the forward Euler method.
 """
 import random
-from neat.indexer import Indexer
-from neat import activation_functions
-from neat.genes import NodeGene
+from neatsociety.indexer import Indexer
+from neatsociety import activation_functions
+from neatsociety.genes import NodeGene
 
 
 class CTNodeGene(NodeGene):

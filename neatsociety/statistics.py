@@ -2,7 +2,7 @@ from __future__ import print_function
 
 import csv
 
-from neat.math_util import mean
+from neatsociety.math_util import mean
 
 
 def get_species_sizes(population):

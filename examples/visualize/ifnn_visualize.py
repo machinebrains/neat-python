@@ -2,7 +2,7 @@ from __future__ import print_function
 
 import matplotlib.pyplot as plt
 
-from neat.ifnn import IFNeuron
+from neatsociety.ifnn import IFNeuron
 
 n = IFNeuron()
 times = []

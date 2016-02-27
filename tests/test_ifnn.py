@@ -1,4 +1,4 @@
-from neat.ifnn import IFNeuron, IFNetwork
+from neatsociety.ifnn import IFNeuron, IFNetwork
 
 
 def test_basic():

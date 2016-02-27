@@ -1,8 +1,8 @@
 from __future__ import print_function
 
 import os
-from neat import nn, population, statistics, visualize
-from neat.config import Config
+from neatsociety import nn, population, statistics, visualize
+from neatsociety.config import Config
 
 
 def test_run():

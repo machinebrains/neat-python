@@ -1,5 +1,5 @@
 import sys
-from neat.math_util import mean
+from neatsociety.math_util import mean
 
 
 def species_max_fitness(species):

@@ -1,4 +1,4 @@
-from neat.iznn import Neuron, IzNetwork
+from neatsociety.iznn import Neuron, IzNetwork
 
 
 def test_basic():

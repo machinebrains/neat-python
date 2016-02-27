@@ -6,7 +6,7 @@ import pickle
 from cart_pole import CartPole, discrete_actuator_force
 from movie import make_movie
 
-from neat import ctrnn
+from neatsociety import ctrnn
 
 # load the winner
 with open('ctrnn_winner_genome', 'rb') as f:

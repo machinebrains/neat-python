@@ -1,7 +1,7 @@
 """ 2-input XOR example """
 from __future__ import print_function
 
-from neat import nn, population, statistics, visualize
+from neatsociety import nn, population, statistics, visualize
 
 # Network inputs and expected outputs.
 xor_inputs = [[0, 0], [0, 1], [1, 0], [1, 1]]

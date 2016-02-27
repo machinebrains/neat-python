@@ -1,8 +1,8 @@
 import os
 
-from neat import genome
-from neat.config import Config
-from neat.indexer import InnovationIndexer
+from neatsociety import genome
+from neatsociety.config import Config
+from neatsociety.indexer import InnovationIndexer
 
 
 def check_simple(genome_type):

@@ -1,4 +1,4 @@
-from neat import activations
+from neatsociety import activations
 
 activation_functions = activations.ActivationFunctionSet()
 

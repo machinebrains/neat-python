@@ -4,7 +4,7 @@ from __future__ import print_function
 import numpy as np
 import matplotlib.pyplot as plt
 
-from neat.ctrnn import CTNeuron, Network
+from neatsociety.ctrnn import CTNeuron, Network
 
 # create two output neurons (they won't receive any external inputs)
 N1 = CTNeuron('OUTPUT', 1, -2.75, 1.0, 'sigmoid', 0.5)

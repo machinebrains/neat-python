@@ -3,7 +3,7 @@ from __future__ import print_function
 import copy
 import warnings
 
-from neat.statistics import get_species_sizes
+from neatsociety.statistics import get_species_sizes
 
 try:
     import graphviz
