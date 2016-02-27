@@ -26,7 +26,7 @@ class Config(object):
     # It also makes the config file and associated setup code somewhat self-documenting, as the
     # classes you need to give to NEAT are shown in the config file.
 
-    allowed_connectivity = ['unconnected', 'fs_neat', 'fully_connected', 'partial']
+    allowed_connectivity = ['fs_neat', 'fully_connected', 'partial']
 
     def __init__(self, filename):
         self.registry = {'DefaultStagnation':DefaultStagnation,
@@ -83,6 +83,7 @@ class Config(object):
 
         # Genetic algorithm configuration
         self.pop_size = int(parameters.get('genetic', 'pop_size'))
+        self.init_pop_size = int(parameters.get('genetic', 'init_pop_size'))
         self.max_fitness_threshold = float(parameters.get('genetic', 'max_fitness_threshold'))
         self.prob_add_conn = float(parameters.get('genetic', 'prob_add_conn'))
         self.prob_add_node = float(parameters.get('genetic', 'prob_add_node'))
@@ -124,15 +125,55 @@ class Config(object):
 
 
         # Gather statistics for each generation.
-        self.collect_statistics = True
+        try:
+            self.collect_statistics = bool(int(parameters.get('RunControl', 'collect_statistics')))
+        except Exception as e:
+            self.collect_statistics = True
+            print("Warning : " + str(e))
+            print("Note : Setting collect_statistics to True.")
+            
         # Show stats after each generation.
-        self.report = True
+        try:
+            self.collect_statistics = bool(int(parameters.get('RunControl', 'report_stats_per_gen')))
+        except Exception as e:
+            self.report = True
+            #print("Warning : " + str(e))
+            #print("Note : Setting report_stats_per_gen to True.")
+            
         # Save the best genome from each generation.
-        self.save_best = False
+        try:
+            self.collect_statistics = bool(int(parameters.get('RunControl', 'save_best')))
+        except Exception as e:
+            self.save_best = False
+            #print("Warning : " + str(e))
+            #print("Note : Setting save_best to False.")
+            
         # Time in minutes between saving checkpoints, None for no timed checkpoints.
-        self.checkpoint_time_interval = None
-        # Time in generations between saving checkpoints, None for no generational checkpoints.
-        self.checkpoint_gen_interval = None
+        try:
+            self.checkpoint_time_interval = int(parameters.get('RunControl', 'checkpoint_per_minute'))
+        except Exception as e:
+            self.checkpoint_time_interval = None
+            #print("Warning : " + str(e))
+            #print("Note : no checkpoints will be generated per time.")
+        
+        # Generations between saving checkpoints, None for no generational checkpoints.
+        try:
+            self.checkpoint_gen_interval = int(parameters.get('RunControl', 'checkpoint_per_generations'))
+        except Exception as e:
+            self.checkpoint_gen_interval = None
+            #print("Warning : " + str(e))
+            #print("Note : no checkpoints will be generated per generations.")
+        
+        # Models directory to save check points and best individual.
+        try:
+            self.models_directory = parameters.get('RunControl', 'models_directory').strip()
+            if not os.path.isdir(self.models_directory):
+                print("Error: Models directory path provided does not exist: " + str(self.models_directory))
+                exit()
+        except Exception as e:
+            self.models_directory = os.getcwd()
+            #print("Warning : " + str(e))
+            #print("Note : Will save the models in the current working directory.")
 
     def register(self, typeName, typeDef):
         """

@@ -4,6 +4,7 @@ import gzip
 import pickle
 import random
 import time
+import os
 
 from neat.config import Config
 from neat.indexer import Indexer, InnovationIndexer
@@ -79,7 +80,7 @@ class Population(object):
     def save_checkpoint(self, filename=None, checkpoint_type="user"):
         """ Save the current simulation state. """
         if filename is None:
-            filename = 'neat-checkpoint-{0}'.format(self.generation)
+            filename = os.path.join(self.config.checkpoint_time_interval.models_directory,'neat-checkpoint-{0}'.format(self.generation))
 
         self.reporters.saving_checkpoint(checkpoint_type, filename)
 
@@ -96,7 +97,7 @@ class Population(object):
         # TODO: The genotype class should know how to do everything below, based
         # solely on what's in the config object. This allows users to completely
         # replace the initial population creation scheme if they choose.
-        for i in range(self.config.pop_size):
+        for i in range(self.config.init_pop_size):
             g_id = self.genome_indexer.next()
             g = self.config.genotype.create_unconnected(g_id, self.config)
             new_population.append(g)
@@ -107,15 +108,17 @@ class Population(object):
                 g.add_hidden_nodes(self.config.hidden_nodes)
 
         # Add connections based on initial connectivity type.
-        if self.config.initial_connection == 'fs_neat':
-            for g in new_population:
-                g.connect_fs_neat(self.innovation_indexer)
-        elif self.config.initial_connection == 'fully_connected':
+        if self.config.initial_connection == 'fully_connected':
             for g in new_population:
                 g.connect_full(self.innovation_indexer)
         elif self.config.initial_connection == 'partial':
             for g in new_population:
                 g.connect_partial(self.innovation_indexer, self.config.connection_fraction)
+        elif self.config.initial_connection == 'fs_neat':
+            for g in new_population:
+                g.connect_fs_neat(self.innovation_indexer)
+        else:
+            raise Exception("Invalid initial connection type: {!r}".format(self.config.initial_connection))
 
         return new_population
 
@@ -184,8 +187,9 @@ class Population(object):
             # fitness evaluations in cases where the fitness is known to be the same if the
             # genome doesn't change--in these cases, evaluating unmodified elites in each
             # generation is a waste of time.
-            fitness_function(population)
-            self.total_evaluations += len(population)
+            unevaluated_population = [p for p in population if p.fitness == None]
+            fitness_function(unevaluated_population)
+            self.total_evaluations += len(unevaluated_population)
 
             # Gather and report statistics.
             best = max(population)
@@ -205,15 +209,15 @@ class Population(object):
             self.species, new_population = self.reproduction.reproduce(self.species, self.config.pop_size)
 
             # Check for complete extinction
-            if not self.species:
-                self.reporters.complete_extinction()
+            #if not self.species:
+            #    self.reporters.complete_extinction()
 
-                # If requested by the user, create a completely new population,
-                # otherwise raise an exception.
-                if self.config.reset_on_extinction:
-                    new_population = self._create_population()
-                else:
-                    raise CompleteExtinctionException()
+            #    # If requested by the user, create a completely new population,
+            #    # otherwise raise an exception.
+            #    if self.config.reset_on_extinction:
+            #        new_population = self._create_population()
+            #    else:
+            #        raise CompleteExtinctionException()
 
             # Update species age.
             for s in self.species:
