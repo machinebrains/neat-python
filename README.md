@@ -5,7 +5,7 @@
 ## About ##
 
 NEAT (NeuroEvolution of Augmenting Topologies) is a method developed by Kenneth O. Stanley for evolving arbitrary neural 
-networks. This project started with initial implementation of neat-python. Society algorithm use similar ideas as proposed by the NEAT algorithm, yet have different behavior torwards how individuals are treated in the evolution. It was forked from the excellent project by @MattKallada and continued by @CodeReclaimers. Major updates on how the evolution happens and how population is controlled is the key changes in the algorithm.
+networks. This project started with initial implementation of neat-python. Society algorithm use similar ideas as proposed by the NEAT algorithm, yet have different behavior torwards how individuals are treated in the evolution. It was forked from the excellent project by @MattKallada and continued by @CodeReclaimers. Major updates on how the population evoloves is the key changes in the algorithm.
 
 For further information regarding general concepts and theory, please see [Selected Publications](http://www.cs.ucf.edu/~kstanley/#publications) on Stanley's website.
 
