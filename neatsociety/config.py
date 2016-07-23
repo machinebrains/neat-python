@@ -164,14 +164,23 @@ class Config(object):
             #print("Warning : " + str(e))
             #print("Note : no checkpoints will be generated per generations.")
         
-        # Models directory to save check points and best individual.
+        # Society directory to save the society check points and best individual.
         try:
-            self.models_directory = parameters.get('RunControl', 'models_directory').strip()
-            if not os.path.isdir(self.models_directory):
-                print("Error: Models directory path provided does not exist: " + str(self.models_directory))
+            self.society_directory = parameters.get('RunControl', 'society_directory').strip()
+            if not os.path.isdir(self.society_directory):
+                print("Error: Models directory path provided does not exist: " + str(self.society_directory))
                 exit()
         except Exception as e:
-            self.models_directory = os.getcwd()
+            self.society_directory = None
+            #print("Warning : " + str(e))
+            #print("Note : Will save the models in the current working directory.")
+
+        # Clean Socicty directory per generations
+        try:
+            self.clean_society_dir_per_generations = int(parameters.get('RunControl', 'clean_society_dir_per_generations'))
+        except Exception as e:
+            self.clean_society_dir_per_generations = 0
+            # 0 will not clean the society directory from previous models
             #print("Warning : " + str(e))
             #print("Note : Will save the models in the current working directory.")
 
