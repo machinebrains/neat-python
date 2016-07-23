@@ -1,0 +1,6 @@
+## Data files
+.idea/*
+examples/bnp_competition/inputs/*.csv
+examples/bnp_competition/predictions/*
+examples/bnp_competition/saved_states/*
+examples/bnp_competition/intermediate_data/*
