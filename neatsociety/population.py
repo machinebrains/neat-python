@@ -22,12 +22,9 @@ class Population(object):
     each of which contains a collection of Genome instances.
     """
 
-    def __init__(self, config, initial_population=None):
+    def __init__(self, config):
         """
         :param config: Either a config.Config object or path to a configuration file.
-        :param initial_population: Either an initial set of Genome instances to be used
-               as the initial population, or None, in which case a randomized set of Genomes
-               will be created automatically based on the configuration parameters.
         """
 
         # If config is not a Config object, assume it is a path to the config file.
@@ -46,6 +43,12 @@ class Population(object):
             self.add_reporter(StdOutReporter())
 
         self.config = config
+
+        ## Check if we have a society directory defined and may be this a continuation on an existing run.
+        if self.society_directory != None:
+            ## Check if latest society file is available
+            if os.path.isdir(self.society_directory)
+
         self.species_indexer = Indexer(1)
         self.genome_indexer = Indexer(1)
         self.innovation_indexer = InnovationIndexer(0)
@@ -57,8 +60,7 @@ class Population(object):
         self.total_evaluations = 0
 
         # Create a population if one is not given, then partition into species.
-        if initial_population is None:
-            initial_population = self._create_population()
+        self.population = self._create_population()
         self._speciate(initial_population)
 
     def add_reporter(self, reporter):
