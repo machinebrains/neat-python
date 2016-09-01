@@ -45,9 +45,11 @@ class Population(object):
         self.config = config
 
         ## Check if we have a society directory defined and may be this a continuation on an existing run.
-        if self.society_directory != None:
+        if self.config.society_directory != None:
             ## Check if latest society file is available
-            if os.path.isdir(self.society_directory)
+            if os.path.isdir(self.config.society_directory):
+                print("Society Directory")
+
 
         self.species_indexer = Indexer(1)
         self.genome_indexer = Indexer(1)

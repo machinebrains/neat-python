@@ -1,6 +1,6 @@
 """ 2-input XOR example """
-from __future__ import print_function
 
+from __future__ import print_function
 from neatsociety import nn, population, statistics, visualize
 
 # Network inputs and expected outputs.
@@ -48,3 +48,4 @@ visualize.draw_net(winner, view=True, filename="xor2-enabled-pruned.gv", show_di
 statistics.save_stats(pop.statistics)
 statistics.save_species_count(pop.statistics)
 statistics.save_species_fitness(pop.statistics)
+

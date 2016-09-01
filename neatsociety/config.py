@@ -29,8 +29,8 @@ class Config(object):
     allowed_connectivity = ['fs_neat', 'fully_connected', 'partial']
 
     def __init__(self, filename):
-        self.registry = {'DefaultStagnation':DefaultStagnation,
-                         'DefaultReproduction':DefaultReproduction}
+        self.registry = {'DefaultStagnation': DefaultStagnation,
+                         'DefaultReproduction': DefaultReproduction}
         self.type_config = {}
         self.load(filename)
 
@@ -123,66 +123,76 @@ class Config(object):
         self.reproduction_type = self.registry[reproduction_type_name]
         self.type_config[reproduction_type_name] = parameters.items(reproduction_type_name)
 
-
         # Gather statistics for each generation.
         try:
             self.collect_statistics = bool(int(parameters.get('RunControl', 'collect_statistics')))
         except Exception as e:
             self.collect_statistics = True
-            print("Warning : " + str(e))
-            print("Note : Setting collect_statistics to True.")
-            
+            #print("Warning : " + str(e))
+            #print("Note : Setting collect_statistics to True.")
+
         # Show stats after each generation.
         try:
-            self.collect_statistics = bool(int(parameters.get('RunControl', 'report_stats_per_gen')))
+            self.report = bool(int(parameters.get('RunControl', 'report_stats_per_gen')))
         except Exception as e:
             self.report = True
-            #print("Warning : " + str(e))
-            #print("Note : Setting report_stats_per_gen to True.")
-            
+            # print("Warning : " + str(e))
+            # print("Note : Setting report_stats_per_gen to True.")
+
         # Save the best genome from each generation.
         try:
-            self.collect_statistics = bool(int(parameters.get('RunControl', 'save_best')))
+            self.save_best = bool(int(parameters.get('RunControl', 'save_best')))
         except Exception as e:
             self.save_best = False
-            #print("Warning : " + str(e))
-            #print("Note : Setting save_best to False.")
-            
+            # print("Warning : " + str(e))
+            # print("Note : Setting save_best to False.")
+
         # Time in minutes between saving checkpoints, None for no timed checkpoints.
         try:
             self.checkpoint_time_interval = int(parameters.get('RunControl', 'checkpoint_per_minute'))
         except Exception as e:
             self.checkpoint_time_interval = None
-            #print("Warning : " + str(e))
-            #print("Note : no checkpoints will be generated per time.")
-        
+            # print("Warning : " + str(e))
+            # print("Note : no checkpoints will be generated per time.")
+
         # Generations between saving checkpoints, None for no generational checkpoints.
         try:
             self.checkpoint_gen_interval = int(parameters.get('RunControl', 'checkpoint_per_generations'))
         except Exception as e:
             self.checkpoint_gen_interval = None
-            #print("Warning : " + str(e))
-            #print("Note : no checkpoints will be generated per generations.")
-        
+            # print("Warning : " + str(e))
+            # print("Note : no checkpoints will be generated per generations.")
+
         # Society directory to save the society check points and best individual.
         try:
-            self.society_directory = parameters.get('RunControl', 'society_directory').strip()
+            self.society_directory = parameters.get('RunControl', 'control_society_file').strip()
             if not os.path.isdir(self.society_directory):
                 print("Error: Models directory path provided does not exist: " + str(self.society_directory))
                 exit()
         except Exception as e:
             self.society_directory = None
-            #print("Warning : " + str(e))
-            #print("Note : Will save the models in the current working directory.")
+            # print("Warning : " + str(e))
+            # print("Note : Will save the models in the current working directory.")
 
-        # Clean Socicty directory per generations
+        # Society directory to save the society check points and best individual.
         try:
-            self.clean_society_dir_per_generations = int(parameters.get('RunControl', 'clean_society_dir_per_generations'))
+            self.society_directory = parameters.get('RunControl', 'problem_society_file').strip()
+            if not os.path.isdir(self.society_directory):
+                print("Error: Models directory path provided does not exist: " + str(self.society_directory))
+                exit()
         except Exception as e:
-            self.clean_society_dir_per_generations = 0
-            # 0 will not clean the society directory from previous models
-            #print("Warning : " + str(e))
-            #print("Note : Will save the models in the current working directory.")
+            self.society_directory = None
+            # print("Warning : " + str(e))
+            # print("Note : Will save the models in the current working directory.")
+
+        # # Clean Socicty directory per generations
+        # try:
+        #     self.clean_society_dir_per_generations = bool(int(parameters.get('RunControl', 'clean_society_dir_per_generations')))
+        # except Exception as e:
+        #     self.clean_society_dir_per_generations = False
+        #     # 0 will not clean the society directory from previous models
+        #     # print("Warning : " + str(e))
+        #     # print("Note : Will save the models in the current working directory.")
 
     def register(self, typeName, typeDef):
         """
